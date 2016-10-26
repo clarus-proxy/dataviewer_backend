@@ -1,0 +1,499 @@
+[
+    {
+        "policyId": "1",
+        "policyName": "medicalrecords_anonymized",
+        "dataUsage": "search",
+        "endpoint": {
+            "protocol": "postgresql",
+            "port": "5432",
+            "baseUrl": "postgresql://10.15.0.89:5432/ehealth"
+        },
+        "attributes": [
+            {
+                "path": "/patient/pat_id",
+                "attributeType": "non_confidential",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_name",
+                "attributeType": "non_confidential",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_last1",
+                "attributeType": "non_confidential",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_last2",
+                "attributeType": "quasi_identifier",
+                "dataType": "numeric_discrete"
+            },
+            {
+                "path": "/patient/pat_gen",
+                "attributeType": "identifier",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_zip",
+                "attributeType": "quasi_identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_id",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_pat",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_age",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_range",
+                "attributeType": "quasi_identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_id",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_ver",
+                "attributeType": "quasi_identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_ep",
+                "attributeType": "identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_pdf",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            }
+        ],
+        "protection": {
+            "module": "anonymization",
+            "attributeTypes": [
+                {
+                    "type": "identifier",
+                    "protection": "supression"
+                },
+                {
+                    "type": "quasi_identifier",
+                    "protection": "k-anonymity",
+                    "parameter": {
+                        "param": "k",
+                        "value": "5"
+                    }
+                },
+                {
+                    "type": "confidential",
+                    "protection": "t-closeness",
+                    "parameter": {
+                        "param": "t",
+                        "value": "0.1"
+                    }
+                },
+                {
+                    "type": "non_confidential",
+                    "protection": "null"
+                }
+            ]
+        }
+    },
+    {
+        "policyId": "2",
+        "policyName": "medicalrecords_encrypted",
+        "dataUsage": "search",
+        "endpoint": {
+            "protocol": "postgresql",
+            "port": "5432",
+            "baseUrl": "postgresql://10.15.0.89:5432/ehealth"
+        },
+        "attributes": [
+            {
+                "path": "/patient/pat_id",
+                "attributeType": "non_confidential",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_name",
+                "attributeType": "non_confidential",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_last1",
+                "attributeType": "non_confidential",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_last2",
+                "attributeType": "quasi_identifier",
+                "dataType": "numeric_discrete"
+            },
+            {
+                "path": "/patient/pat_gen",
+                "attributeType": "identifier",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_zip",
+                "attributeType": "quasi_identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_id",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_pat",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_age",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_range",
+                "attributeType": "quasi_identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_id",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_ver",
+                "attributeType": "quasi_identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_ep",
+                "attributeType": "identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_pdf",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            }
+        ],
+        "protection": {
+            "module": "encryption",
+            "attributeTypes": [
+                {
+                    "type": "identifier",
+                    "protection": "searchable"
+                },
+                {
+                    "type": "quasi_identifier",
+                    "protection": "simple"
+                },
+                {
+                    "type": "confidential",
+                    "protection": "homomorphism"
+                },
+                {
+                    "type": "non_confidential",
+                    "protection": "none"
+                }
+            ]
+        }
+    },
+    {
+        "policyId": "3",
+        "policyName": "medicalrecords_splitted",
+        "dataUsage": "search",
+        "endpoint": {
+            "protocol": "postgresql",
+            "port": "5432",
+            "baseUrl": "postgresql://10.15.0.89:5432/ehealth"
+        },
+        "attributes": [
+            {
+                "path": "/patient/pat_id",
+                "attributeType": "non_confidential",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_name",
+                "attributeType": "non_confidential",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_last1",
+                "attributeType": "non_confidential",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_last2",
+                "attributeType": "quasi_identifier",
+                "dataType": "numeric_discrete"
+            },
+            {
+                "path": "/patient/pat_gen",
+                "attributeType": "identifier",
+                "dataType": "categoric_ordinal"
+            },
+            {
+                "path": "/patient/pat_zip",
+                "attributeType": "quasi_identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_id",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_pat",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_age",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/episode/ep_range",
+                "attributeType": "quasi_identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_id",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_ver",
+                "attributeType": "quasi_identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_ep",
+                "attributeType": "identifier",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/lab_result/lab_pdf",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            }
+        ],
+        "protection": {
+            "module": "splitting",
+            "attributeTypes": [
+                {
+                    "type": "identifier",
+                    "protection": "splitting",
+                    "parameter": {
+                        "param": "clouds",
+                        "value": "2"
+                    }
+                },
+                {
+                    "type": "confidential",
+                    "protection": "encryption"
+                },
+                {
+                    "type": "non_confidential",
+                    "protection": "null"
+                }
+            ]
+        }
+    },
+    {
+        "policyId": "4",
+        "policyName": "groundwater_anonymized",
+        "dataUsage": "search",
+        "endpoint": {
+            "protocol": "wfs",
+            "port": "8080",
+            "baseUrl": "http://10.15.0.91:8080/geoserver/clarus/wfs"
+        },
+        "attributes": [
+            {
+                "path": "/groundwater_boreholes/geom",
+                "attributeType": "identifier",
+                "dataType": "geometric_object"
+            },
+            {
+                "path": "/groundwater_boreholes/nom_com",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/adresse",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/code_bss",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/denominati",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },	  
+            {
+                "path": "/groundwater_boreholes/type_point",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/district",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/circonscri",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },	  
+            {
+                "path": "/groundwater_boreholes/precision",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/altitude",
+                "attributeType": "quasi_identifier",
+                "dataType": "numeric_continuous"
+            },
+            {
+                "path": "/groundwater_boreholes/prof_max",
+                "attributeType": "non_confidential",
+                "dataType": "numeric_continuous"
+            }
+        ],
+        "protection": {
+            "module": "anonymization",
+            "attributeTypes": [
+                {
+                    "type": "identifier",
+                    "protection": "coarsening",
+                    "parameter": {
+                        "param": "radius",
+                        "value": "5000"
+                    }
+                },		  
+                {
+                    "type": "quasi_identifier",
+                    "protection": "t-closeness"
+                },
+                {
+                    "type": "confidential",
+                    "protection": "suppression"
+                },
+                {
+                    "type": "non_confidential",
+                    "protection": ""
+                }
+            ]
+        }
+    },
+    {
+        "policyId": "5",
+        "policyName": "groundwater_splitted",
+        "dataUsage": "search",
+        "endpoint": {
+            "protocol": "wfs",
+            "port": "8080",
+            "baseUrl": "http://10.15.0.91:8080/geoserver/clarus/wfs"
+        },
+        "attributes": [
+            {
+                "path": "/groundwater_boreholes/geom",
+                "attributeType": "identifier",
+                "dataType": "geometric_object"
+            },
+            {
+                "path": "/groundwater_boreholes/nom_com",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/adresse",
+                "attributeType": "confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/code_bss",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/denominati",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },	  
+            {
+                "path": "/groundwater_boreholes/type_point",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/district",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/circonscri",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },	  
+            {
+                "path": "/groundwater_boreholes/precision",
+                "attributeType": "non_confidential",
+                "dataType": "categoric"
+            },
+            {
+                "path": "/groundwater_boreholes/altitude",
+                "attributeType": "quasi_identifier",
+                "dataType": "numeric_continuous"
+            },
+            {
+                "path": "/groundwater_boreholes/prof_max",
+                "attributeType": "non_confidential",
+                "dataType": "numeric_continuous"
+            }
+        ],
+        "protection": {
+            "module": "splitting",
+            "attributeTypes": [
+                {
+                    "type": "identifier",
+                    "protection": "splitting",
+                    "parameter": {
+                        "param": "clouds",
+                        "value": "2"
+                    }
+                },
+                {
+                    "type": "confidential",
+                    "protection": "encryption"
+                },
+                {
+                    "type": "non_confidential",
+                    "protection": "null"
+                }
+            ]
+        }
+    }
+]
