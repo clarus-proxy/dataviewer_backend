@@ -2,6 +2,7 @@ package eu.clarussecure.dataviewer.resources;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import eu.clarussecure.dataviewer.model.DatasetDescription;
 import eu.clarussecure.dataviewer.model.SecurityPolicy;
 import eu.clarussecure.dataviewer.model.SecurityPolicyAttribute;
 import java.io.FileReader;
@@ -32,7 +33,7 @@ public class DatasetListResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/attributes/{policyname}")
-    public String getProtocolEndpoints(@PathParam("policyname") String policyName) throws IOException, ParseException {
+    public String getPolicyAttributes(@PathParam("policyname") String policyName) throws IOException, ParseException {
 
         ClassPathResource policyFile = new ClassPathResource("securitypolicy-example.json");
         
@@ -43,6 +44,34 @@ public class DatasetListResource {
         SecurityPolicy sp = policies.stream().filter(policy -> policy.getPolicyName().equals(policyName)).findFirst().orElse(new SecurityPolicy());
         
         return gson.toJson(sp.getAttributes(), new TypeToken<ArrayList<SecurityPolicyAttribute>>() {}.getType());
+
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/list")
+    public String getDatasetList() throws IOException {
+        
+        
+        Gson gson = new Gson();
+        ClassPathResource policyFile = new ClassPathResource("securitypolicy-example.json");
+        
+        List<DatasetDescription> datasetDescriptions = new ArrayList<DatasetDescription>();
+               
+        List<SecurityPolicy> policies = gson.fromJson(new InputStreamReader(policyFile.getInputStream()), new TypeToken<ArrayList<SecurityPolicy>>(){}.getType());
+        
+        // policies.stream().filter(policy -> policy.getEndpoint().getProtocol().equals(protocolName)).map(SecurityPolicy::getEndpoint);
+        for (SecurityPolicy policy : policies){
+            
+            DatasetDescription datasetDescription = new DatasetDescription();
+            datasetDescription.setName(policy.getPolicyName());
+            datasetDescription.setProtocol(policy.getEndpoint().getProtocol());
+            datasetDescription.setTechnique(policy.getProtection().getModule());
+            datasetDescriptions.add(datasetDescription);
+            
+        }
+
+        return gson.toJson(datasetDescriptions, new TypeToken<ArrayList<DatasetDescription>>(){}.getType());
 
     }
 
