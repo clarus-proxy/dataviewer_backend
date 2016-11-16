@@ -1,7 +1,7 @@
 [
     {
         "policyId": "1",
-        "policyName": "medicalrecords_anonymized",
+        "policyName": "medical_records_anonymized",
         "dataUsage": "search",
         "endpoint": {
             "protocol": "postgresql",
@@ -112,7 +112,7 @@
     },
     {
         "policyId": "2",
-        "policyName": "medicalrecords_encrypted",
+        "policyName": "medical_records_encrypted",
         "dataUsage": "search",
         "endpoint": {
             "protocol": "postgresql",
@@ -215,7 +215,7 @@
     },
     {
         "policyId": "3",
-        "policyName": "medicalrecords_splitted",
+        "policyName": "medical_records_splitted",
         "dataUsage": "search",
         "endpoint": {
             "protocol": "postgresql",
@@ -318,7 +318,7 @@
     },
     {
         "policyId": "4",
-        "policyName": "groundwater_anonymized",
+        "policyName": "groundwater_coarsened",
         "dataUsage": "search",
         "endpoint": {
             "protocol": "wfs",
