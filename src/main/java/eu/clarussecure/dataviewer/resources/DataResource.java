@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 //@CrossOrigin(origins = "http://127.0.0.1", maxAge = 3600)
 @Component
 @Path("/data")
-public class DataRessource {
+public class DataResource {
 
     /**
      * getWFSData
