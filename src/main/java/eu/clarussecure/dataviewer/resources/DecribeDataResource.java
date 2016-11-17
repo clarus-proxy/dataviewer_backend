@@ -24,9 +24,9 @@ public class DecribeDataResource {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
-
+    
     /**
-     * getPostgreSQLDescription
+     * getPSQLTableDescription
      * @param tableName
      * @return
      * @throws Exception
@@ -34,14 +34,14 @@ public class DecribeDataResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/pgsql/{table}")
-    public String getPostgreSQLDescription(@PathParam("table") String tableName) throws Exception {
+    public String getPSQLTableDescription(@PathParam("table") String tableName) throws Exception {
 
         List<ColumnInfo> list = jdbcTemplate.query(String.format("SELECT column_name, data_type, udt_name, is_nullable FROM information_schema.columns WHERE table_name = '%s'; ", tableName), (ResultSet rs) -> {
             List<ColumnInfo> columnList = new ArrayList<ColumnInfo>();
             while (rs.next()) {
                 ColumnInfo col = new ColumnInfo();
-                col.setColumnName(rs.getString("column_name"));
-                col.setDataType(rs.getString("data_type"));
+                col.setName(rs.getString("column_name"));
+                col.setType(rs.getString("data_type"));
                 col.setUdtName(rs.getString("udt_name"));
                 col.setNullable(rs.getBoolean("is_nullable"));
                 columnList.add(col);
@@ -54,8 +54,9 @@ public class DecribeDataResource {
         return gson.toJson(list);
     }
 
+
     /**
-     * getWFSDescription
+     * getWFSLayerDescription
      * @param layerName
      * @return
      * @throws Exception
@@ -63,7 +64,7 @@ public class DecribeDataResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wfs/{layer}")
-    public String getWFSDescription(@PathParam("layer") String layerName) throws Exception {
+    public String getWFSLayerDescription(@PathParam("layer") String layerName) throws Exception {
 
         RestTemplate restTemplate = new RestTemplate();
         Gson gson = new Gson();
