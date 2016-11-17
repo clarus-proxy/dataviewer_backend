@@ -1,22 +1,23 @@
 package eu.clarussecure.dataviewer.model;
 
-
 public class DatasetDescription {
 
-    private String name;
+    private long policyId;
+    private String policyName;
     private String protocol;
     private String technique;
+
     private String urlProtectedData;
     private String urlUnprotectedData;
     private String urlAttributes;
     private String urlPolicy;
 
-    public String getName() {
-        return name;
+    public String getPolicyName() {
+        return policyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPolicyName(String name) {
+        this.policyName = name;
     }
 
     public String getProtocol() {
@@ -66,5 +67,13 @@ public class DatasetDescription {
     public void setUrlPolicy(String urlPolicy) {
         this.urlPolicy = urlPolicy;
     }
-    
+
+    public long getPolicyId() {
+        return policyId;
+    }
+
+    public void setPolicyId(long policyId) {
+        this.policyId = policyId;
+    }
+
 }
