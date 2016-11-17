@@ -64,9 +64,11 @@ public class DatasetListResource {
         for (SecurityPolicy policy : policies){
             
             DatasetDescription datasetDescription = new DatasetDescription();
-            datasetDescription.setName(policy.getPolicyName());
+            datasetDescription.setPolicyName(policy.getPolicyName());
+            datasetDescription.setPolicyId(policy.getPolicyId());
             datasetDescription.setProtocol(policy.getEndpoint().getProtocol());
             datasetDescription.setTechnique(policy.getProtection().getModule());
+
             datasetDescriptions.add(datasetDescription);
             
         }
