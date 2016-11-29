@@ -4,22 +4,17 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
@@ -27,10 +22,9 @@ import com.google.gson.reflect.TypeToken;
 
 import eu.clarussecure.dataviewer.model.SecurityPolicyEndpoint;
 
-//@CrossOrigin(origins = "http://127.0.0.1", maxAge = 3600)
 @Component
 @Path("/data")
-public class DataResource {
+public class CountDataResource {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -44,10 +38,8 @@ public class DataResource {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/pgsql/{table}")
-	public String getPSQLData(@PathParam("table") String tableName,
-			@QueryParam("limit") @DefaultValue("1000000") long limit,
-			@QueryParam("start") @DefaultValue("0") long start)
+	@Path("count/pgsql/{table}")
+	public String getCountPagePGSQL(@PathParam("table") String tableName)
 			throws Exception {
 
 		/*
@@ -55,17 +47,11 @@ public class DataResource {
 		 * policy attributes ?
 		 */
 
-		String sql = String.format("SELECT * FROM %s limit %d offset %d",
-				tableName, limit, start);
+		String sql = String.format("SELECT count(*) FROM %s ", tableName);
 		JSONArray json = new JSONArray();
+
 		List<Map<String, Object>> results = jdbcTemplate.queryForList(sql);
-		results.forEach((result) -> {
-			JSONObject obj = new JSONObject();
-			result.entrySet().forEach((entry) -> {
-				obj.put(entry.getKey(), entry.getValue());
-			});
-			json.add(obj);
-		});
+		json.add(results.get(0));
 
 		return json.toString();
 	}
@@ -79,10 +65,8 @@ public class DataResource {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("wfs/{layer}")
-	public String getWFSData(@PathParam("layer") String layerName,
-			@QueryParam("limit") @DefaultValue("1000000") long limit,
-			@QueryParam("start") @DefaultValue("0") long start)
+	@Path("count/wfs/{layer}")
+	public String getCountPageWFS(@PathParam("layer") String layerName)
 			throws Exception {
 		// String
 		RestTemplate restTemplate = new RestTemplate();
@@ -94,13 +78,23 @@ public class DataResource {
 		}.getType();
 		List<SecurityPolicyEndpoint> wfsEndpoints = gson.fromJson(json,
 				endpointListType);
-
 		String wfsEndpointUrl = wfsEndpoints.stream().findFirst().orElse(null)
 				.getBaseUrl();
 		String httpUrl = String
-				.format("%s?request=GetFeature&version=1.1.0&typeName=%s&maxFeatures=%5d&startIndex=%d&outputFormat=application/json",
-						wfsEndpointUrl, layerName, limit, start);
+				.format("%s?request=GetFeature&version=1.1.0&typeName=%s&startIndex=0&maxFeatures=1&outputFormat=application/json",
+						wfsEndpointUrl, layerName);
+		String result = restTemplate.getForObject(httpUrl, String.class);
 
-		return (restTemplate.getForObject(httpUrl, String.class));
+		return getTotalFeatures(result);
+	}
+
+	// Fonction qui retourne le nombre de Features total
+	public static String getTotalFeatures(String result) {
+
+		String resultSplitted[] = result.split(",");
+		String resultSplitted1[] = resultSplitted[1].split(":");
+		String total = resultSplitted1[1];
+		return total;
+
 	}
 }
