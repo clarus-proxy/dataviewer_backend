@@ -26,75 +26,75 @@ import eu.clarussecure.dataviewer.model.SecurityPolicyEndpoint;
 @Path("/data")
 public class CountDataResource {
 
-	@Autowired
-	JdbcTemplate jdbcTemplate;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
-	/**
-	 * getPSQLData
-	 * 
-	 * @param tableName
-	 * @return
-	 * @throws Exception
-	 */
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("count/pgsql/{table}")
-	public String getCountPagePGSQL(@PathParam("table") String tableName)
-			throws Exception {
+    /**
+     * getPSQLData
+     * 
+     * @param tableName
+     * @return
+     * @throws Exception
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("count/pgsql/{table}")
+    public String getCountPagePGSQL(@PathParam("table") String tableName)
+            throws Exception {
 
-		/*
-		 * TODO prevent SQL injection ---> check that tableName is in security
-		 * policy attributes ?
-		 */
+        /*
+         * TODO prevent SQL injection ---> check that tableName is in security
+         * policy attributes ?
+         */
 
-		String sql = String.format("SELECT count(*) FROM %s ", tableName);
-		JSONArray json = new JSONArray();
+        String sql = String.format("SELECT count(*) FROM %s ", tableName);
+        JSONArray json = new JSONArray();
 
-		List<Map<String, Object>> results = jdbcTemplate.queryForList(sql);
-		json.add(results.get(0));
+        List<Map<String, Object>> results = jdbcTemplate.queryForList(sql);
+        json.add(results.get(0));
 
-		return json.toString();
-	}
+        return json.toString();
+    }
 
-	/**
-	 * getWFSData
-	 * 
-	 * @param layerName
-	 * @return
-	 * @throws Exception
-	 */
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("count/wfs/{layer}")
-	public static String getCountPageWFS(@PathParam("layer") String layerName)
-			throws Exception {
-		// String
-		RestTemplate restTemplate = new RestTemplate();
-		Gson gson = new Gson();
+    /**
+     * getWFSData
+     * 
+     * @param layerName
+     * @return
+     * @throws Exception
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("count/wfs/{layer}")
+    public String getCountPageWFS(@PathParam("layer") String layerName)
+            throws Exception {
+        // String
+        RestTemplate restTemplate = new RestTemplate();
+        Gson gson = new Gson();
 
-		String json = new EndpointListResource().getProtocolEndpoints("wfs");
+        String json = new EndpointListResource().getProtocolEndpoints("wfs");
 
-		Type endpointListType = new TypeToken<ArrayList<SecurityPolicyEndpoint>>() {
-		}.getType();
-		List<SecurityPolicyEndpoint> wfsEndpoints = gson.fromJson(json,
-				endpointListType);
-		String wfsEndpointUrl = wfsEndpoints.stream().findFirst().orElse(null)
-				.getBaseUrl();
-		String httpUrl = String
-				.format("%s?request=GetFeature&version=1.1.0&typeName=%s&startIndex=0&maxFeatures=1&outputFormat=application/json",
-						wfsEndpointUrl, layerName);
-		String result = restTemplate.getForObject(httpUrl, String.class);
+        Type endpointListType = new TypeToken<ArrayList<SecurityPolicyEndpoint>>() {
+        }.getType();
+        List<SecurityPolicyEndpoint> wfsEndpoints = gson.fromJson(json,
+                endpointListType);
+        String wfsEndpointUrl = wfsEndpoints.stream().findFirst().orElse(null)
+                .getBaseUrl();
+        String httpUrl = String
+                .format("%s?request=GetFeature&version=1.1.0&typeName=%s&startIndex=0&maxFeatures=1&outputFormat=application/json",
+                        wfsEndpointUrl, layerName);
+        String result = restTemplate.getForObject(httpUrl, String.class);
 
-		return getTotalFeatures(result);
-	}
+        return getTotalFeatures(result);
+    }
 
-	// Fonction qui retourne le nombre de Features total
-	public static String getTotalFeatures(String result) {
+    // Fonction qui retourne le nombre de Features total
+    public static String getTotalFeatures(String result) {
 
-		String resultSplitted[] = result.split(",");
-		String resultSplitted1[] = resultSplitted[1].split(":");
-		String total = resultSplitted1[1];
-		return total;
+        String resultSplitted[] = result.split(",");
+        String resultSplitted1[] = resultSplitted[1].split(":");
+        String total = resultSplitted1[1];
+        return total;
 
-	}
+    }
 }
