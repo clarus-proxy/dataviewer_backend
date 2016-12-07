@@ -66,7 +66,7 @@ public class CountDataResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("count/wfs/{layer}")
-	public String getCountPageWFS(@PathParam("layer") String layerName)
+	public static String getCountPageWFS(@PathParam("layer") String layerName)
 			throws Exception {
 		// String
 		RestTemplate restTemplate = new RestTemplate();
