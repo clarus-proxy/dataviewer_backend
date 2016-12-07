@@ -97,7 +97,7 @@ public class DataResource {
         String wfsEndpointUrl = wfsEndpoints.stream().findFirst().orElse(null)
                 .getBaseUrl();
         String httpUrl = String
-                .format("%s?request=GetFeature&version=1.1.0&typeName=%s&maxFeatures=%s&startIndex=%d&outputFormat=application/json",
+                .format("%s?request=GetFeature&version=1.1.0&typeName=%s&maxFeatures=%d&startIndex=%d&outputFormat=application/json",
                         wfsEndpointUrl, layerName, limit, start);
 
         return (restTemplate.getForObject(httpUrl, String.class));
