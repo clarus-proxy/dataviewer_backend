@@ -52,7 +52,8 @@ public class DataResource {
          * TODO prevent SQL injection ---> check that tableName is in security
          * policy attributes ?
          */
-
+        if (limit.equals(""))
+            limit = "all";
         String sql = String.format("SELECT * FROM %s limit %s offset %d",
                 tableName, limit, start);
         JSONArray json = new JSONArray();
@@ -79,7 +80,7 @@ public class DataResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wfs/{layer}")
     public String getWFSData(@PathParam("layer") String layerName,
-            @QueryParam("limit") long limit,
+            @QueryParam("limit") @DefaultValue("1000000") long limit,
             @QueryParam("start") @DefaultValue("0") long start)
             throws Exception {
         // String
@@ -95,13 +96,6 @@ public class DataResource {
 
         String wfsEndpointUrl = wfsEndpoints.stream().findFirst().orElse(null)
                 .getBaseUrl();
-        if (limit == 0) {
-            limit = Integer
-                    .parseInt(CountDataResource.getTotalFeatures(restTemplate
-                            .getForObject(
-                                    "%s?request=GetFeature&version=1.1.0&typeName=%s&maxFeatures=1&outputFormat=application/json",
-                                    String.class)));
-        }
         String httpUrl = String
                 .format("%s?request=GetFeature&version=1.1.0&typeName=%s&maxFeatures=%s&startIndex=%d&outputFormat=application/json",
                         wfsEndpointUrl, layerName, limit, start);
