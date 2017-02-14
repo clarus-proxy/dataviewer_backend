@@ -89,6 +89,7 @@ public class CountDataResource {
     }
 
     // Fonction qui retourne le nombre de Features total
+    
     public static String getTotalFeatures(String result) {
 
         String resultSplitted[] = result.split(",");
