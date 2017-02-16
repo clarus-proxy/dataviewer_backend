@@ -9,14 +9,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -32,10 +24,10 @@ public class PgsqlResource implements ProtocolResource {
     }
 
 	@Override
-	public String getClearData(InetSocketAddress endpoint, String collectionName, String protocol, String server) {
-		DataSource dataSource = Util.buildDataSource(Util.buildHttpUrl(endpoint, server));
+	public String getClearData(String protocol, InetSocketAddress endpoint, String store, String collection) {
+		DataSource dataSource = Util.buildDataSource(Util.buildHttpUrl(endpoint, store));
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		String sql = String.format("SELECT * FROM %s" , collectionName);
+		String sql = String.format("SELECT * FROM %s" , collection);
 	    JSONArray json = new JSONArray();
 	    List<Map<String, Object>> results = jdbcTemplate.queryForList(sql);
 	    results.forEach((result) -> {
@@ -50,12 +42,16 @@ public class PgsqlResource implements ProtocolResource {
 	}
 
 	@Override
-	public String getProtectedData(InetSocketAddress endpoint, String collectionName, String protocol, String server) {
-		DataSource dataSource = Util.buildDataSource(Util.buildHttpUrl(endpoint, server));
+	public String getProtectedData(String protocol, InetSocketAddress endpoint, String store, String collection) {
+
+        String limit = "all"; // default limit
+        int start = 0; // default start
+
+		DataSource dataSource = Util.buildDataSource(Util.buildHttpUrl(endpoint, store));
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		String head = String
                 .format("SELECT column_name, concat(table_name,'.',column_name) as protected_column_name FROM information_schema.columns WHERE table_name = '%s' ",
-                		collectionName);
+                		collection);
         List<Map<String, Object>> resultMetaData = jdbcTemplate.queryForList(head);
         JSONArray json = new JSONArray();
         TreeMap<Integer, String> cspList = new TreeMap<Integer, String>();
@@ -74,9 +70,9 @@ public class PgsqlResource implements ProtocolResource {
         for (Map.Entry<Integer, String> entryCSP : cspList.entrySet()) {
         	String sql = String
                     .format("SELECT  CLARUS_PROTECTED(%d),*  FROM %s",
-                            entryCSP.getKey(), collectionName);
+                            entryCSP.getKey(), collection);
             	sql = String.format("SELECT  *  FROM %s limit %s offset %d",
-            			collectionName);
+            			collection, limit, start);
             List<Map<String, Object>> results = jdbcTemplate.queryForList(sql);
             results.forEach((result) -> {
                 JSONObject obj = new JSONObject();

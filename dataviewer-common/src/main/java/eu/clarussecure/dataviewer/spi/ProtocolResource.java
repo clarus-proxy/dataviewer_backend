@@ -6,9 +6,9 @@ public interface ProtocolResource {
 
     String getProtocolName();
 
-    String getClearData(InetSocketAddress endpoint, String collectionName, String protocol, String server);
+    String getClearData(String protocol, InetSocketAddress endpoint, String store, String collection);
 
-    String getProtectedData(InetSocketAddress endpoint, String collectionName, String protocol, String server);
+    String getProtectedData(String protocol, InetSocketAddress endpoint, String store, String collection);
 
 
 

@@ -21,16 +21,28 @@ public class ProtocolResourceService {
 		return service;
 	}
 
-	public String getProtectedData(InetSocketAddress endpoint, String collectionName, String protocol, String server) {
+	public String getProtectedData(String protocol, InetSocketAddress endpoint, String store, String collection) {
 		String protectedData = null;
 		Iterator<ProtocolResource> resources = loader.iterator();
 		while (resources.hasNext()) {
 			ProtocolResource pluginResource = resources.next();
 			if (pluginResource.getClass().getSimpleName().toLowerCase().contains(protocol.toLowerCase())) {
-				protectedData = pluginResource.getProtectedData(endpoint, collectionName, protocol, collectionName);
+				protectedData = pluginResource.getProtectedData(protocol, endpoint, store, collection);
 			}
 		}
 		return protectedData;
+	}
+
+	public String getClearData(String protocol, InetSocketAddress endpoint, String store, String collection) {
+		String clearData = null;
+		Iterator<ProtocolResource> resources = loader.iterator();
+		while (resources.hasNext()) {
+			ProtocolResource pluginResource = resources.next();
+			if (pluginResource.getClass().getSimpleName().toLowerCase().contains(protocol.toLowerCase())) {
+				clearData = pluginResource.getClearData(protocol, endpoint, store, collection);
+			}
+		}
+		return clearData;
 	}
 
 }

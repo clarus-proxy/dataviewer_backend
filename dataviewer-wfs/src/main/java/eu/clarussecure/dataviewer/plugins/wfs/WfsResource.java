@@ -26,13 +26,13 @@ public class WfsResource implements ProtocolResource {
     }
 
     @Override
-    public String getClearData(InetSocketAddress endpoint, String collectionName, String server, String protocol) {
+    public String getClearData(String protocol, InetSocketAddress endpoint, String store, String collection) {
     	RestTemplate restTemplate = new RestTemplate();
         //parse URL from endpoint's data
     	String wfsEndpointUrl = UrlBuilder.buildHttpUrl(endpoint);
         String httpUrl = String
                 .format("%s/%s/%s?request=GetFeature&version=1.1.0&typeName=%s&outputFormat=application/json",
-                        wfsEndpointUrl, server, protocol, collectionName);
+                        wfsEndpointUrl, store, protocol, collection);
         // add request header
         HttpHeaders headers = new HttpHeaders();
         headers.set("CLARUS", "unprotected");
@@ -43,7 +43,7 @@ public class WfsResource implements ProtocolResource {
     }
 
     @Override
-	public String getProtectedData(InetSocketAddress endpoint, String collectionName, String protocol, String server) {
+	public String getProtectedData(String protocol, InetSocketAddress endpoint, String store, String collection) {
     	RestTemplate restTemplate = new RestTemplate();
         Gson gson = new Gson();
         TreeMap<Integer, String> cspList = new TreeMap<Integer, String>();
@@ -59,7 +59,7 @@ public class WfsResource implements ProtocolResource {
         // request meta data
         String httpHead = String.format(
                 "%s?request=HEAD&typeName=%s&outputFormat=application/json",
-                wfsEndpointUrl, collectionName);
+                wfsEndpointUrl, collection);
         String headResponse = restTemplate.getForObject(httpHead, String.class);
 
         cspList.put(1, "csp1");
@@ -71,7 +71,7 @@ public class WfsResource implements ProtocolResource {
             headers.set("CLARUS_protected", String.valueOf(entryCSP.getKey()));
             String httpUrl = String
                     .format("%s?request=GetFeature&version=1.1.0&typeName=%s&outputFormat=application/json",
-                            wfsEndpointUrl, collectionName);
+                            wfsEndpointUrl, collection);
             HttpEntity entity = new HttpEntity(headers);
             response = restTemplate.exchange(httpUrl, HttpMethod.GET, entity,
                     String.class);
