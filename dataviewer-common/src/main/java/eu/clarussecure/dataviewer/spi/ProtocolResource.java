@@ -9,7 +9,7 @@ public interface ProtocolResource {
     String getClearData(String protocol, InetSocketAddress endpoint, String store, String collection);
 
     String getProtectedData(String protocol, InetSocketAddress endpoint, String store, String collection);
-
-
+    
+    String getDescription(String protocol, InetSocketAddress endpoint, String store, String collection);
 
 }

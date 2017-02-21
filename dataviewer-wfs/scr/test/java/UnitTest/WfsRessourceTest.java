@@ -18,7 +18,7 @@ public class WfsRessourceTest {
 	public void wtfClearTest() {
 		WfsResource  resource = new WfsResource();
 		InetSocketAddress endpoint = new InetSocketAddress(hostName, port);
-		String data = resource.getClearData(endpoint, "groundwater_boreholes", server, protocol);
+		String data = resource.getClearData("groundwater_boreholes", endpoint, server, protocol);
 		Assert.assertEquals("Data shall be not null and return Json", "{", String.valueOf(data.charAt(0)));
 	}
 	
@@ -26,7 +26,7 @@ public class WfsRessourceTest {
 	public void wfsProtectedTest() {
 		WfsResource  resource = new WfsResource();
 		InetSocketAddress endpoint = new InetSocketAddress(hostNameProtected, port);
-		String data = resource.getProtectedData(endpoint, "groundwater_boreholes", server, protocol);
+		String data = resource.getProtectedData("groundwater_boreholes", endpoint, server, protocol);
 		Assert.assertEquals("Data shall be not null and return Json", "{", String.valueOf(data.charAt(0)));
 	}
 

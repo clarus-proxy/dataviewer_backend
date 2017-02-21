@@ -1,4 +1,4 @@
-package UnitTest;
+package eu.clarussecure.dataviewer.plugins.pgsql.test;
 
 import java.net.InetSocketAddress;
 
@@ -30,6 +30,14 @@ public class pgsqlResourceTest {
 		InetSocketAddress endpoint = new InetSocketAddress(hostNameProtected, port);
 		String data = resource.getProtectedData(protocol, endpoint, store,"patient");
 		Assert.assertNotNull("Request shall retrieve some data", data);
+	}
+	
+	@Test
+	public void pgsqlDescriptionTest(){
+		PgsqlResource  resource = new PgsqlResource();
+		InetSocketAddress endpoint = new InetSocketAddress(hostNameProtected, port);
+		String data = resource.getDescription(null, endpoint, store,"patient");
+		Assert.assertNotEquals("Request shall retrieve some informations", "[]",data);
 	}
 	
 }

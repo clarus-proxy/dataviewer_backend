@@ -86,4 +86,14 @@ public class WfsResource implements ProtocolResource {
         return (jsonResult.toJSONString());
 	}
 
+	@Override
+	public String getDescription(String protocol, InetSocketAddress endpoint, String store, String collection) {
+		RestTemplate restTemplate = new RestTemplate();
+		String wfsEndpointUrl = UrlBuilder.buildHttpUrl(endpoint);
+        String httpUrl = String
+                .format("%s/%s/%s?request=GetFeature&version=1.1.0&typeName=%s&outputFormat=application/json",
+                        wfsEndpointUrl, store, protocol, collection);
+        return (restTemplate.getForObject(httpUrl, String.class));
+	}
+
 }

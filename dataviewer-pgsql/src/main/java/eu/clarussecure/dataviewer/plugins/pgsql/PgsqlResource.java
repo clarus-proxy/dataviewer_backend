@@ -1,9 +1,8 @@
 package eu.clarussecure.dataviewer.plugins.pgsql;
 
-import eu.clarussecure.dataviewer.plugins.pgsql.util.Util;
-import eu.clarussecure.dataviewer.spi.ProtocolResource;
-
 import java.net.InetSocketAddress;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -14,6 +13,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import com.google.gson.Gson;
+
+import eu.clarussecure.dataviewer.plugins.pgsql.model.ColumnInfo;
+import eu.clarussecure.dataviewer.plugins.pgsql.util.Util;
+import eu.clarussecure.dataviewer.spi.ProtocolResource;
 
 @Component
 public class PgsqlResource implements ProtocolResource {
@@ -84,6 +89,26 @@ public class PgsqlResource implements ProtocolResource {
             json.add("end of csp");
         }
 		return json.toString();
+	}
+
+	@Override
+	public String getDescription(String protocol, InetSocketAddress endpoint, String store, String collection) {
+		DataSource dataSource = Util.buildDataSource(Util.buildHttpUrl(endpoint, store));
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	    List<ColumnInfo> list = jdbcTemplate.query(String.format("SELECT column_name, data_type, udt_name, is_nullable FROM information_schema.columns WHERE table_name = '%s'; ", collection), (ResultSet rs) -> {
+            List<ColumnInfo> columnList = new ArrayList<ColumnInfo>();
+            while (rs.next()) {
+                ColumnInfo col = new ColumnInfo();
+                col.setName(rs.getString("column_name"));
+                col.setType(rs.getString("data_type"));
+                col.setUdtName(rs.getString("udt_name"));
+                col.setNullable(rs.getBoolean("is_nullable"));
+                columnList.add(col);
+            }
+            return columnList;
+        });
+        Gson gson = new Gson();
+        return gson.toJson(list);
 	}
 
 }
