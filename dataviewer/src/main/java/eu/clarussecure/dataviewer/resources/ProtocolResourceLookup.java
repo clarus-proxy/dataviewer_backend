@@ -9,15 +9,20 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Component
-@Path("/lookup")
+@Path("/view")
 public class ProtocolResourceLookup {
 
     /*
-     * TODO way to retrieve endpoint (host + port) is actually not define. That is why
-     * both var are declared null in order to be able to compile project
+     * way to retrieve endpoint (host + port) is not defined yet.
+     * temporarily set default values for testing
+     * TODO remove test values
      */
-    protected InetSocketAddress endpoint = null;
-    protected String store = "";
+    //protected InetSocketAddress endpoint = null;
+    protected InetSocketAddress endpoint = new InetSocketAddress("10.15.0.89",5432);
+    //protected String store = "";
+    protected String store = "ehealth";
+
+    private ProtocolResourceService service = ProtocolResourceService.getInstance();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -25,8 +30,6 @@ public class ProtocolResourceLookup {
     public String getProtectedData(@PathParam("protocol") String protocol, @PathParam("collection") String collection,
                                    @QueryParam("limit") @DefaultValue("all") String limit,
                                    @QueryParam("start") @DefaultValue("0") String start) {
-
-        ProtocolResourceService service = ProtocolResourceService.getInstance();
 
         String protectedData = service.getProtectedData(protocol, getEndpoint(), getStore(), collection, limit, start);
 
@@ -42,11 +45,20 @@ public class ProtocolResourceLookup {
                                @QueryParam("limit") @DefaultValue("all") String limit,
                                @QueryParam("start") @DefaultValue("0") String start) {
 
-        ProtocolResourceService service = ProtocolResourceService.getInstance();
-
         String clearData = service.getClearData(protocol, getEndpoint(), getStore(), collection, limit, start);
 
         return clearData;
+
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/description/{protocol}/{collection}")
+    public String getDescription(@PathParam("protocol") String protocol, @PathParam("collection") String collection) {
+
+        String description = service.getDescription(protocol, getEndpoint(), getStore(), collection);
+
+        return description;
 
     }
 

@@ -30,6 +30,7 @@ public class PgsqlResource implements ProtocolResource {
 
     @Override
     public String getClearData(String protocol, InetSocketAddress endpoint, String store, String collection, String limit, String start) {
+
         DataSource dataSource = Util.buildDataSource(Util.buildHttpUrl(endpoint, store));
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         String sql = String.format("SELECT * FROM %s", collection);
@@ -90,6 +91,7 @@ public class PgsqlResource implements ProtocolResource {
 
     @Override
     public String getDescription(String protocol, InetSocketAddress endpoint, String store, String collection) {
+
         DataSource dataSource = Util.buildDataSource(Util.buildHttpUrl(endpoint, store));
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         List<ColumnInfo> list = jdbcTemplate.query(String.format("SELECT column_name, data_type, udt_name, is_nullable FROM information_schema.columns WHERE table_name = '%s'; ",

@@ -21,28 +21,55 @@ public class ProtocolResourceService {
         return service;
     }
 
-    public String getProtectedData(String protocol, InetSocketAddress endpoint, String store, String collection, String limit, String start) {
-        String protectedData = null;
+    private ProtocolResource getProtocolResourceProvider(String protocol) {
+
         Iterator<ProtocolResource> resources = loader.iterator();
         while (resources.hasNext()) {
             ProtocolResource pluginResource = resources.next();
             if (pluginResource.getClass().getSimpleName().toLowerCase().contains(protocol.toLowerCase())) {
-                protectedData = pluginResource.getProtectedData(protocol, endpoint, store, collection, limit, start);
+                return pluginResource;
             }
         }
+
+        return null;
+    }
+
+    public String getProtectedData(String protocol, InetSocketAddress endpoint, String store, String collection, String limit, String start) {
+
+        String protectedData = null;
+
+        ProtocolResource protocolResourceProvider = getProtocolResourceProvider(protocol);
+        if (protocolResourceProvider != null) {
+            protectedData = protocolResourceProvider.getProtectedData(protocol, endpoint, store, collection, limit, start);
+        }
+
         return protectedData;
     }
 
+
     public String getClearData(String protocol, InetSocketAddress endpoint, String store, String collection, String limit, String start) {
+
         String clearData = null;
-        Iterator<ProtocolResource> resources = loader.iterator();
-        while (resources.hasNext()) {
-            ProtocolResource pluginResource = resources.next();
-            if (pluginResource.getClass().getSimpleName().toLowerCase().contains(protocol.toLowerCase())) {
-                clearData = pluginResource.getClearData(protocol, endpoint, store, collection, limit, start);
-            }
+
+        ProtocolResource protocolResourceProvider = getProtocolResourceProvider(protocol);
+        if (protocolResourceProvider != null) {
+            clearData = protocolResourceProvider.getClearData(protocol, endpoint, store, collection, limit, start);
         }
+
         return clearData;
     }
+
+    public String getDescription(String protocol, InetSocketAddress endpoint, String store, String collection) {
+
+        String description = null;
+
+        ProtocolResource protocolResourceProvider = getProtocolResourceProvider(protocol);
+        if (protocolResourceProvider != null) {
+            description = protocolResourceProvider.getDescription(protocol, endpoint, store, collection);
+        }
+
+        return description;
+    }
+
 
 }
