@@ -51,7 +51,7 @@ public class DataResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/pgsql/unprotected/{table}")
+    @Path("/pgsql/{table}")
     public String getPSQLData(@PathParam("table") String tableName,
             @QueryParam("limit") @DefaultValue("all") String limit,
             @QueryParam("start") @DefaultValue("0") long start)
@@ -179,7 +179,7 @@ public class DataResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("wfs/unprotected/{layer}")
+    @Path("wfs/{layer}")
     public String getWFSData(@PathParam("layer") String layerName,
             @QueryParam("limit") @DefaultValue("1000000") long limit,
             @QueryParam("start") @DefaultValue("0") long start)
