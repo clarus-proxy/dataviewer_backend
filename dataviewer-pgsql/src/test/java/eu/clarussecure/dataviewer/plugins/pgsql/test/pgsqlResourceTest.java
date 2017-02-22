@@ -15,12 +15,14 @@ public class pgsqlResourceTest {
 	final int port = 5432;
 	final String store = "ehealth";
 	final String protocol = "pgsql";
+	final String limit = "25";
+	final String start = "0";
 
 	@Test
 	public void pgsqlClearTest() {
 		PgsqlResource  resource = new PgsqlResource();
 		InetSocketAddress endpoint = new InetSocketAddress(hostName, port);
-		String data = resource.getClearData(protocol, endpoint, store, "patient");
+		String data = resource.getClearData(protocol, endpoint, store, "patient", limit, start);
 		Assert.assertNotNull("Request shall retrieve some data", data);
 	}
 	
@@ -28,7 +30,7 @@ public class pgsqlResourceTest {
 	public void pgsqlProtectedTest(){
 		PgsqlResource  resource = new PgsqlResource();
 		InetSocketAddress endpoint = new InetSocketAddress(hostNameProtected, port);
-		String data = resource.getProtectedData(protocol, endpoint, store,"patient");
+		String data = resource.getProtectedData(protocol, endpoint, store,"patient", limit, start);
 		Assert.assertNotNull("Request shall retrieve some data", data);
 	}
 	

@@ -5,10 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Component
@@ -25,11 +22,13 @@ public class ProtocolResourceLookup {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/data/protected/{protocol}/{collection}")
-    public String getProtectedData(@PathParam("protocol") String protocol, @PathParam("collection") String collection) {
+    public String getProtectedData(@PathParam("protocol") String protocol, @PathParam("collection") String collection,
+                                   @QueryParam("limit") @DefaultValue("all") String limit,
+                                   @QueryParam("start") @DefaultValue("0") String start) {
 
         ProtocolResourceService service = ProtocolResourceService.getInstance();
 
-        String protectedData = service.getProtectedData(protocol, getEndpoint(), getStore(), collection);
+        String protectedData = service.getProtectedData(protocol, getEndpoint(), getStore(), collection, limit, start);
 
         return protectedData;
 
@@ -39,11 +38,13 @@ public class ProtocolResourceLookup {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/data/{protocol}/{collection}")
-    public String getClearData(@PathParam("protocol") String protocol, @PathParam("collection") String collection) {
+    public String getClearData(@PathParam("protocol") String protocol, @PathParam("collection") String collection,
+                               @QueryParam("limit") @DefaultValue("all") String limit,
+                               @QueryParam("start") @DefaultValue("0") String start) {
 
         ProtocolResourceService service = ProtocolResourceService.getInstance();
 
-        String clearData = service.getClearData(protocol, getEndpoint(), getStore(), collection);
+        String clearData = service.getClearData(protocol, getEndpoint(), getStore(), collection, limit, start);
 
         return clearData;
 

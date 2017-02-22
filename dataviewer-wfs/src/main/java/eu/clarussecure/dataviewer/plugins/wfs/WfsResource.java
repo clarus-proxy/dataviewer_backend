@@ -26,13 +26,13 @@ public class WfsResource implements ProtocolResource {
     }
 
     @Override
-    public String getClearData(String protocol, InetSocketAddress endpoint, String store, String collection) {
+    public String getClearData(String protocol, InetSocketAddress endpoint, String store, String collection, String limit, String start) {
     	RestTemplate restTemplate = new RestTemplate();
         //parse URL from endpoint's data
     	String wfsEndpointUrl = UrlBuilder.buildHttpUrl(endpoint);
         String httpUrl = String
-                .format("%s/%s/%s?request=GetFeature&version=1.1.0&typeName=%s&outputFormat=application/json",
-                        wfsEndpointUrl, store, protocol, collection);
+                .format("%s/%s/%s?request=GetFeature&version=1.1.0&typeName=%s&maxFeatures=%s&startIndex=%s&outputFormat=application/json",
+                        wfsEndpointUrl, store, protocol, collection, limit, start);
         // add request header
         HttpHeaders headers = new HttpHeaders();
         headers.set("CLARUS", "unprotected");
@@ -43,7 +43,7 @@ public class WfsResource implements ProtocolResource {
     }
 
     @Override
-	public String getProtectedData(String protocol, InetSocketAddress endpoint, String store, String collection) {
+	public String getProtectedData(String protocol, InetSocketAddress endpoint, String store, String collection, String limit, String start) {
     	RestTemplate restTemplate = new RestTemplate();
         Gson gson = new Gson();
         TreeMap<Integer, String> cspList = new TreeMap<Integer, String>();
@@ -58,8 +58,8 @@ public class WfsResource implements ProtocolResource {
 
         // request meta data
         String httpHead = String.format(
-                "%s?request=HEAD&typeName=%s&outputFormat=application/json",
-                wfsEndpointUrl, collection);
+                "%s?request=HEAD&typeName=%s&maxFeatures=%s&startIndex=%s&outputFormat=application/json",
+                wfsEndpointUrl, collection, limit, start);
         String headResponse = restTemplate.getForObject(httpHead, String.class);
 
         cspList.put(1, "csp1");
