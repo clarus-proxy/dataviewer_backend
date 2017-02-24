@@ -1,13 +1,6 @@
 package eu.clarussecure.dataviewer.config;
 
-import eu.clarussecure.dataviewer.resources.ProtocolResourceLookup;
-import eu.clarussecure.dataviewer.resources.CountDataResource;
-import eu.clarussecure.dataviewer.resources.DatasetListResource;
-import eu.clarussecure.dataviewer.resources.SecurityPolicyResource;
-import eu.clarussecure.dataviewer.resources.DecribeDataResource;
-import eu.clarussecure.dataviewer.resources.EndpointListResource;
-import eu.clarussecure.dataviewer.resources.DataResource;
-import eu.clarussecure.dataviewer.resources.SchemaResource;
+import eu.clarussecure.dataviewer.resources.*;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.stereotype.Component;
@@ -29,6 +22,7 @@ public class JerseyConfig extends ResourceConfig {
         register(DataResource.class);
         register(SchemaResource.class);
         register(CountDataResource.class);
+        register(CapabilitiesResource.class);
 
         register(ProtocolResourceLookup.class);
 
