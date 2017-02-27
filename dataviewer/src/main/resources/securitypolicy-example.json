@@ -6,7 +6,8 @@
         "endpoint": {
             "protocol": "postgresql",
             "port": "5432",
-            "baseUrl": "postgresql://10.15.0.89:5432/ehealth"
+            "baseUrl": "postgresql://10.15.0.89:5432/",
+            "basePath": "ehealth"
         },
         "attributes": [
             {

@@ -22,12 +22,7 @@ public class ProtocolResourceLookup {
     @PathParam("proxyid")
     private String proxyId;
 
-    private static final String PROXY_PATTERN = "proxy";
-
-    /*
-     * TODO remove test values for store
-     */
-    protected String store = "ehealth";
+    private static final String URL_PROXY_PATTERN = "proxy";
 
     private ProtocolResourceService service = ProtocolResourceService.getInstance();
 
@@ -38,12 +33,11 @@ public class ProtocolResourceLookup {
                                    @QueryParam("limit") @DefaultValue("all") String limit,
                                    @QueryParam("start") @DefaultValue("0") String start) {
 
-        String protectedData = service.getProtectedData(protocol, getRunningProxyAddress(getProxyId()), getStore(), collection, limit, start);
+        String protectedData = service.getProtectedData(protocol, getRunningProxyAddress(getProxyId()), getStore(getProxyId()), collection, limit, start);
 
         return protectedData;
 
     }
-
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -52,7 +46,7 @@ public class ProtocolResourceLookup {
                                @QueryParam("limit") @DefaultValue("all") String limit,
                                @QueryParam("start") @DefaultValue("0") String start) {
 
-        String clearData = service.getClearData(protocol, getRunningProxyAddress(getProxyId()), getStore(), collection, limit, start);
+        String clearData = service.getClearData(protocol, getRunningProxyAddress(getProxyId()), getStore(getProxyId()), collection, limit, start);
 
         return clearData;
 
@@ -63,15 +57,10 @@ public class ProtocolResourceLookup {
     @Path("/description/{protocol}/{collection}")
     public String getDescription(@PathParam("protocol") String protocol, @PathParam("collection") String collection) {
 
-        String description = service.getDescription(protocol, getRunningProxyAddress(getProxyId()), getStore(), collection);
+        String description = service.getDescription(protocol, getRunningProxyAddress(getProxyId()), getStore(getProxyId()), collection);
 
         return description;
 
-    }
-
-
-    public String getStore() {
-        return store;
     }
 
     /**
@@ -80,7 +69,7 @@ public class ProtocolResourceLookup {
      * @return id
      */
     private int getProxyId() {
-        int pos = PROXY_PATTERN.length();
+        int pos = URL_PROXY_PATTERN.length();
         return Integer.parseInt(proxyId.substring(pos, pos + 1));
     }
 
@@ -116,6 +105,41 @@ public class ProtocolResourceLookup {
         }
 
         return endpoint;
+    }
+
+
+    /**
+     * getStore
+     * @param id
+     * @return store
+     */
+    private String getStore(int id) {
+
+        String store = null;
+        JSONParser parser = new JSONParser();
+        ClassPathResource policyFile = new ClassPathResource("securitypolicy-example.json");
+
+        JSONArray array = null;
+
+        try {
+            array = (JSONArray) (parser.parse(new InputStreamReader(policyFile.getInputStream())));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        for (Object object : array) {
+            String policyId = ((JSONObject) object).get("policyId").toString();
+            if (Integer.parseInt(policyId) == id) {
+                JSONObject endpoint = (JSONObject)((JSONObject) object).get("endpoint");
+                store = (String) endpoint.get("basePath");
+            }
+        }
+
+        return store;
+
     }
 
 
