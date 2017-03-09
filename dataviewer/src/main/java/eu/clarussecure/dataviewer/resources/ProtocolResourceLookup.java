@@ -5,11 +5,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.InetSocketAddress;
 
 import javax.ws.rs.*;
@@ -21,6 +22,9 @@ public class ProtocolResourceLookup {
 
     @PathParam("proxyid")
     private String proxyId;
+
+    @Autowired
+    private Environment env;
 
     private static final String URL_PROXY_PATTERN = "proxy";
 
@@ -85,12 +89,15 @@ public class ProtocolResourceLookup {
 
         InetSocketAddress endpoint = null;
         JSONParser parser = new JSONParser();
-        ClassPathResource proxyMappingFile = new ClassPathResource("proxyhostmapping-example.json");
 
+        File proxyMappingFile = new File(env.getProperty("proxyhost-mapping"));
         JSONArray array = null;
-        try {
-            array = (JSONArray) (parser.parse(new InputStreamReader(proxyMappingFile.getInputStream())));
+        try (
+                InputStream targetStream = new FileInputStream(proxyMappingFile)) {
+                array = (JSONArray) parser.parse(new InputStreamReader(targetStream));
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -117,13 +124,15 @@ public class ProtocolResourceLookup {
 
         String store = null;
         JSONParser parser = new JSONParser();
-        ClassPathResource policyFile = new ClassPathResource("securitypolicy-example.json");
 
+        File policyFile = new File(env.getProperty("security-policy"));
         JSONArray array = null;
+        try (
+            InputStream targetStream = new FileInputStream(policyFile)) {
+            array = (JSONArray) parser.parse(new InputStreamReader(targetStream));
 
-        try {
-            array = (JSONArray) (parser.parse(new InputStreamReader(policyFile.getInputStream())));
-
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {

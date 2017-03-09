@@ -328,57 +328,57 @@
         },
         "attributes": [
             {
-                "path": "/groundwater_boreholes/geom",
+                "path": "/coarsen_boreholes_3857/geom",
                 "attributeType": "identifier",
                 "dataType": "geometric_object"
             },
             {
-                "path": "/groundwater_boreholes/nom_com",
+                "path": "/coarsen_boreholes_3857/nom_com",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/adresse",
+                "path": "/coarsen_boreholes_3857/adresse",
                 "attributeType": "confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/code_bss",
+                "path": "/coarsen_boreholes_3857/code_bss",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/denominati",
+                "path": "/coarsen_boreholes_3857/denominati",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },	  
             {
-                "path": "/groundwater_boreholes/type_point",
+                "path": "/coarsen_boreholes_3857/type_point",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/district",
+                "path": "/coarsen_boreholes_3857/district",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/circonscri",
+                "path": "/coarsen_boreholes_3857/circonscri",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },	  
             {
-                "path": "/groundwater_boreholes/precision",
+                "path": "/coarsen_boreholes_3857/precision",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/altitude",
+                "path": "/coarsen_boreholes_3857/altitude",
                 "attributeType": "quasi_identifier",
                 "dataType": "numeric_continuous"
             },
             {
-                "path": "/groundwater_boreholes/prof_max",
+                "path": "/coarsen_boreholes_3857/prof_max",
                 "attributeType": "non_confidential",
                 "dataType": "numeric_continuous"
             }
@@ -420,57 +420,57 @@
         },
         "attributes": [
             {
-                "path": "/groundwater_boreholes/geom",
+                "path": "/groundwater_boreholes_3857/geom",
                 "attributeType": "identifier",
                 "dataType": "geometric_object"
             },
             {
-                "path": "/groundwater_boreholes/nom_com",
+                "path": "/groundwater_boreholes_3857/nom_com",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/adresse",
+                "path": "/groundwater_boreholes_3857/adresse",
                 "attributeType": "confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/code_bss",
+                "path": "/groundwater_boreholes_3857/code_bss",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/denominati",
+                "path": "/groundwater_boreholes_3857/denominati",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },	  
             {
-                "path": "/groundwater_boreholes/type_point",
+                "path": "/groundwater_boreholes_3857/type_point",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/district",
+                "path": "/groundwater_boreholes_3857/district",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/circonscri",
+                "path": "/groundwater_boreholes_3857/circonscri",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },	  
             {
-                "path": "/groundwater_boreholes/precision",
+                "path": "/groundwater_boreholes_3857/precision",
                 "attributeType": "non_confidential",
                 "dataType": "categoric"
             },
             {
-                "path": "/groundwater_boreholes/altitude",
+                "path": "/groundwater_boreholes_3857/altitude",
                 "attributeType": "quasi_identifier",
                 "dataType": "numeric_continuous"
             },
             {
-                "path": "/groundwater_boreholes/prof_max",
+                "path": "/groundwater_boreholes_3857/prof_max",
                 "attributeType": "non_confidential",
                 "dataType": "numeric_continuous"
             }
