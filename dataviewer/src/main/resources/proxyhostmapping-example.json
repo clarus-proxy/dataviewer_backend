@@ -1,0 +1,27 @@
+[
+  {
+    "policyId": "1",
+    "proxyHost": "localhost",
+    "proxyPort": "5432"
+  },
+  {
+    "policyId": "2",
+    "proxyHost": "localhost",
+    "proxyPort": "5432"
+  },
+  {
+    "policyId": "3",
+    "proxyHost": "localhost",
+    "proxyPort": "5432"
+  },
+  {
+    "policyId": "4",
+    "proxyHost": "localhost",
+    "proxyPort": "8080"
+  },
+  {
+    "policyId": "5",
+    "proxyHost": "localhost",
+    "proxyPort": "8080"
+  }
+]
